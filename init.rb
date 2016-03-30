@@ -1,3 +1,8 @@
+ActionDispatch::Callbacks.to_prepare do
+
+
+end
+
 Redmine::Plugin.register :redmine_quality_assurance do
   name 'Redmine Quality Assurance plugin'
   author 'Author name'
