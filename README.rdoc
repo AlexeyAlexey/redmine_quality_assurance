@@ -2,3 +2,13 @@
 
 Description goes here
 https://github.com/collectiveidea/awesome_nested_set
+
+
+$ rake routes CONTROLLER=test_cases
+    test_cases GET    /test_cases(.:format)          test_cases#index
+               POST   /test_cases(.:format)          test_cases#create
+ new_test_case GET    /test_cases/new(.:format)      test_cases#new
+edit_test_case GET    /test_cases/:id/edit(.:format) test_cases#edit
+     test_case GET    /test_cases/:id(.:format)      test_cases#show
+               PUT    /test_cases/:id(.:format)      test_cases#update
+               DELETE /test_cases/:id(.:format)      test_cases#destroy

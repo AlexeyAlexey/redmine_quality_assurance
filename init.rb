@@ -1,5 +1,5 @@
 ActionDispatch::Callbacks.to_prepare do
-
+  Issue.send :include, RedmineQualityAssurancePatch::IssuePatch
 
 end
 
@@ -10,4 +10,11 @@ Redmine::Plugin.register :redmine_quality_assurance do
   version '0.0.1'
   url 'http://example.com/path/to/plugin'
   author_url 'http://example.com/about'
+
+
+  project_module :quality_assurance do
+    permission :test_cases, { :test_cases => [:index, :show, :new, :create, :edit, :update, :destroy] }
+  end
+
+  settings :default => {'empty' => true}, :partial => 'settings/quality_assurance/settings'
 end
