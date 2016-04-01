@@ -23,12 +23,8 @@ class TestCasesController < ApplicationController
   end
 
   def show
-    @test_cases = TestCase.eager_load(issue: [:project]).where(nil)
-    if params["parent_id"].blank?
-      @test_cases = @test_cases.where("test_cases.parent_id IS NULL")
-    else
-      @test_cases = @test_cases.where("test_cases.parent_id = ?", params["parent_id"])
-    end
+    @test_case = TestCase.eager_load(issue: [:project]).where(nil)
+    @test_case = @test_case.where("test_cases.id = ?", params["id"])
   end
 
   def edit
