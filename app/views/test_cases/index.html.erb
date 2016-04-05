@@ -1,40 +1,3 @@
-<table class="list">
-  <thead>
-    <tr>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <%@test_cases.each do |test_case|%>
-      <tr>
-        <td><%=test_case.id%></td>
-        <td><%=test_case.name%></td>
-        <td><%=test_case.issue_id ? link_to_issue(test_case.issue) : ""%></td>
-        <td><%=link_to "Show", test_case_path(id: test_case.id)%></td>
-        <td><%= link_to "New sub", new_test_case_path(parent_id: test_case.id)%></td>
-        <td><%=link_to "Edit", edit_test_case_path(id: test_case.id)%></td>
-        <td><%=link_to "Delete", {controller: "test_cases", action: "destroy", id: test_case.id}, method: "DELETE"%></td>
-      </tr>
-    <%end%>
-  </tbody>
-</table>
-
-
-<%= link_to "New", new_test_case_path%>
-
-
-<br>
-<br>
-<br>
-<br>
-<br>
-
 <style type="text/css">
   .test-case{
     border-radius: 10px;
@@ -45,10 +8,21 @@
     background-color: #F74949;
   }
 
-</style>
+  table.test-case { border: 1px solid #e4e4e4;  border-collapse: collapse; width: 100%; margin-bottom: 4px; }
+  table.test-case th {  background-color:#EEEEEE; padding: 4px; white-space:nowrap; }
+  
+  span.payload {
+    overflow: hidden;
+    white-space: nowrap;
+  }
+  span.payload:hover { 
+    overflow: scroll; 
+    white-space: normal;
+  }
 
+</style>
 <%@test_cases.each do |test_case|%>
-  <table class="list">
+  <table class="list test-case">
     <thead class="subject">
       <tr colspan="7">
         <th ><%=test_case.issue.subject%></th>
@@ -74,108 +48,39 @@
 
     <tbody>
         <tr>
-          <td><%=test_case.id%></td>
+          <td><b><%=l(:field_status)%></b>: <%=h(test_case.issue.status.name)%></td>
           <td><%=test_case.name%></td>
           <td><%=test_case.issue_id ? link_to_issue(test_case.issue) : ""%></td>
-          <td><%=link_to "Show", test_case_path(id: test_case.id)%></td>
-          <td><%= link_to "New sub", new_test_case_path(parent_id: test_case.id)%></td>
-          <td><%=link_to "Edit", edit_test_case_path(id: test_case.id)%></td>
-          <td><%=link_to "Delete", {controller: "test_cases", action: "destroy", id: test_case.id}, method: "DELETE"%></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
         </tr>
      
+        <tr class="payload" >
+          <td colspan="7">
+            <span class="payload">
+              <%=textilizable test_case.issue, :description, :attachments => test_case.issue.attachments%>
+            </span>
+          </td>
+        </tr>
         <tr>
-          <td colspan="7"><%=test_case.issue.description%></td>
-          
+          <td></td>
+          <td></td>
+          <td></td>
+          <td><%=link_to "Show", test_case_path(id: test_case.id, project_id: @project.identifier)%></td>
+          <td><%= link_to "New sub", new_test_case_path(parent_id: test_case.id, project_id: @project.identifier)%></td>
+          <td><%=link_to "Edit", edit_test_case_path(id: test_case.id, project_id: @project.identifier)%></td>
+          <td><%=link_to "Delete", {controller: "test_cases", action: "destroy", id: test_case.id, project_id: @project.identifier}, method: "DELETE"%></td>
         </tr>
     </tbody>
   </table>
 
 <%end%>
 
+<%= link_to "New", new_test_case_path(project_id: @project.identifier)%>
 
 <% content_for :header_tags do%>
   <%=stylesheet_link_tag("test_case", :plugin => "redmine_quality_assurance")%>
 <% end %>
-
-
-<div class="pricing-plans">
-  <div class="wrap">
-            
-
-            <div class="pricing-grid1">
-              <div class="price-value">
-                <h2><a href="#"> BASIC</a></h2>
-                <h5><span>$ 19.99</span><lable> / month</lable></h5>
-                
-                <div class="sale-box">
-                  <span class="on_sale title_shop">NEW</span>
-                </div>
-
-              </div>
-              <div class="price-bg">
-                <ul>
-                  <li class="whyt"><a href="#">5GB Disk Space </a></li>
-                  <li><a href="#">10 Domain Names</a></li>
-                  <li class="whyt"><a href="#">5 E-Mail Address </a></li>
-                  <li><a href="#">50GB Monthly Bandwidth </a></li>
-                  <li class="whyt"><a href="#">Fully Support</a></li>
-                </ul>
-                <div class="cart1">
-                  <a class="popup-with-zoom-anim" href="#small-dialog">Purchase</a>
-                </div>
-              </div>
-            </div>
-
-            <div class="pricing-grid2">
-              <div class="price-value two">
-                <h3><a href="#">STANDARD</a></h3>
-                <h5><span>$ 29.99</span><lable> / month</lable></h5>
-                <div class="sale-box two">
-              <span class="on_sale title_shop">NEW</span>
-              </div>
-
-              </div>
-              <div class="price-bg">
-              <ul>
-                <li class="whyt"><a href="#">10GB Disk Space </a></li>
-                <li><a href="#">20 Domain Names</a></li>
-                <li class="whyt"><a href="#">10 E-Mail Address </a></li>
-                <li><a href="#">100GB Monthly Bandwidth </a></li>
-                <li class="whyt"><a href="#">Fully Support</a></li>
-              </ul>
-              <div class="cart2">
-                <a class="popup-with-zoom-anim" href="#small-dialog">Purchase</a>
-              </div>
-              </div>
-            </div>
-
-            <div class="pricing-grid3">
-              <div class="price-value three">
-                <h4><a href="#">PREMIUM</a></h4>
-                <h5><span>$ 49.99</span><lable> / month</lable></h5>
-                <div class="sale-box three">
-              <span class="on_sale title_shop">NEW</span>
-              </div>
-
-              </div>
-              <div class="price-bg">
-              <ul>
-                <li class="whyt"><a href="#">50GB Disk Space </a></li>
-                <li><a href="#">50 Domain Names</a></li>
-                <li class="whyt"><a href="#">20 E-Mail Address </a></li>
-                <li><a href="#">300GB Monthly Bandwidth </a></li>
-                <li class="whyt"><a href="#">Fully Support</a></li>
-              </ul>
-              <div class="cart3">
-                <a class="popup-with-zoom-anim" href="#small-dialog">Purchase</a>
-              </div>
-              </div>
-            </div>
-              
-            
-
-  </div>
-        
-</div>
-
 

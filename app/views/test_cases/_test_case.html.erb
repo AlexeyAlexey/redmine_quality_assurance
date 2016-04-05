@@ -1,0 +1,50 @@
+<table class="list test-case">
+  <thead class="subject">
+    <tr colspan="7">
+      <th><%=test_case.name%></th>
+      <th><%=test_case.issue.subject%></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <thead>
+    <tr>
+      <th><b><%=l(:field_status)%></b>: <%=h(test_case.issue.status.name)%></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <tr>
+      <td><%=test_case.id%></td>
+      <td><%=test_case.name%></td>
+      <td><%=test_case.issue_id ? link_to_issue(test_case.issue) : ""%></td>
+      <td></td>
+      <td></td>
+    </tr>
+   
+    <tr class="payload" >
+      <td colspan="7">
+        <span class="payload">
+          <%=textilizable test_case.issue, :description, :attachments => test_case.issue.attachments%>
+        </span>
+      </td>
+    </tr>
+
+    <tr>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td>
+        <%= link_to "New sub", new_test_case_path(parent_id: test_case.id, project_id: project.identifier)%>
+      </td>
+      <td><%=link_to "Edit", edit_test_case_path(id: test_case.id, project_id: project.identifier)%></td>
+    </tr>
+
+  </tbody>
+</table>
+

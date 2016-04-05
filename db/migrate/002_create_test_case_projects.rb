@@ -5,6 +5,8 @@ class CreateTestCaseProjects < ActiveRecord::Migration
       t.integer :project_id
       t.timestamps null: false
     end
+    add_index "test_case_projects", ["test_case_id"], :name => "index_test_case_projects_on_test_case_id"
+    add_index "test_case_projects", ["project_id"], :name => "index_test_case_projects_on_project_id"
   end
 
   def down

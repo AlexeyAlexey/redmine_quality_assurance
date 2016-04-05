@@ -1,29 +1,6 @@
-<table class="list">
-  <thead>
-    <tr>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-    </tr>
-  </thead>
+<div>
 
-  <tbody>
-    <%@test_case.descendants.each do |test_case|%>
-      <tr>
-        <td><%=test_case.id%></td>
-        <td><%=test_case.name%></td>
-        <td><%=test_case.issue_id ? link_to_issue(test_case.issue) : ""%></td>
-        <td><%=link_to "Show", test_case(id: test_case.id)%></td>
-        <td><%= link_to "New sub", new_test_case_path(parent_id: test_case.id)%></td>
-        <td><%=link_to "Edit", edit_test_case_path(id: test_case.id)%></td>
-        <td><%=link_to "Delete", {controller: "test_cases", action: "destroy", id: test_case.id}, method: "DELETE"%></td>
-      </tr>
-    <%end%>
-  </tbody>
-</table>
+<%=render_test_case_hierarchy(@test_case.self_and_descendants.group_by(&:parent_id) , node=nil, options={}) %>
 
-
-<%= link_to "New", new_test_case_path%>
+  
+</div>

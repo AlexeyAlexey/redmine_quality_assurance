@@ -1,5 +1,6 @@
 ActionDispatch::Callbacks.to_prepare do
   Issue.send :include, RedmineQualityAssurancePatch::IssuePatch
+  Project.send :include, RedmineQualityAssurancePatch::ProjectPatch
 
 end
 
@@ -17,4 +18,6 @@ Redmine::Plugin.register :redmine_quality_assurance do
   end
 
   settings :default => {'empty' => true}, :partial => 'settings/quality_assurance/settings'
+
+  menu :project_menu, :test_cases, { :controller => 'test_cases', :action => 'index' }, :caption => 'test_cases'
 end
