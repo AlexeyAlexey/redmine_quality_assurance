@@ -11,7 +11,7 @@
   <thead>
     <tr>
       <th><b><%=l(:field_status)%></b>: <%=h(test_case.issue.status.name)%></th>
-      <th></th>
+      <th class='assigned-to'><%=l(:field_assigned_to)%><%=avatar(test_case.issue.assigned_to, :size => "14").to_s.html_safe  + (test_case.issue.assigned_to ? link_to_user(test_case.issue.assigned_to) : "-")%></th>
       <th></th>
       <th></th>
       <th></th>
@@ -33,6 +33,33 @@
           <%=textilizable test_case.issue, :description, :attachments => test_case.issue.attachments%>
         </span>
       </td>
+    </tr>
+    <tr>
+      <td>История</td>
+      <td></td>
+      <td></td>
+      <td><%=link_to 'View History', view_journal_edit_test_cases_path(project_id: project.identifier, issue_id: test_case.issue.id, test_case_id: test_case.id), remote: true%></td>
+      <td><%=link_to 'Hide History', '###', onclick: "$( 'tr#journal-test-case-#{test_case.id}').toggle();"%></td>
+    </tr>
+    <tr id="journal-test-case-<%=test_case.id%>">
+      <td class="journal" colspan="7">
+
+      </td>
+    </tr>
+
+    <tr colspan="7">
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td><%=link_to "Edit Test Case", edit_edit_test_case_path(id: test_case.id, test_case_id: test_case.id, project_id: project.identifier)%></td>
+      <td><%=%></td>
     </tr>
 
     <tr>

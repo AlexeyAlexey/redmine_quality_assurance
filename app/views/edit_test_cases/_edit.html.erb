@@ -1,0 +1,41 @@
+<%=form_tag ({controller: "edit_test_cases", action: "update", id: test_case.id, test_case_id: test_case.id}, method: 'put') do%>
+  <fieldset class="tabular">
+    <legend><%= l(:label_change_properties) %></legend>
+
+	<%if issue.safe_attribute?('status_id') && allowed_statuses.present? %>
+	  <p>
+	    <label><%= l(:field_status) %></label>
+	    <%=select_tag :status_id, options_from_collection_for_select(allowed_statuses, "id", "name", "#{issue.status_id}"), {:required => true}%>
+	  </p>
+	<%else%>
+	  <p><label><%= l(:field_status) %></label> <%= h(issue.status.name) %></p>
+	<%end%>
+
+	<%if issue.safe_attribute? 'assigned_to_id' %>
+      <p>
+        <label><%= l(:field_assigned_to) %></label>
+        <%= select_tag :assigned_to_id, options_from_collection_for_select(issue.assignable_users,"id", "name", "#{issue.assigned_to_id}"), :include_blank => true, :required => issue.required_attribute?('assigned_to_id') %>
+      </p>
+    <%end%>
+  </fieldset>
+  <fieldset>
+    <legend><%= l(:field_notes) %></legend>
+	<% if issue.safe_attribute? 'description' %>
+	  <p>
+	    <%= label_tag :description%>
+		  <%= content_tag 'span', :id => "issue_description_and_toolbar" do %>
+		    <%= text_area_tag :description, nil,
+		                   :cols => 60,
+		                   :rows => (issue.description.blank? ? 10 : [[10, issue.description.length / 50].max, 100].min),
+		                   :accesskey => accesskey(:edit),
+		                   :class => 'wiki-edit',
+		                   :no_label => true %>
+		  <%end%>
+	  </p>
+	  <%= wikitoolbar_for 'description' %>
+	<%end%>
+  </fieldset>
+
+  <%=submit_tag "Update"%>
+<%end%>
+

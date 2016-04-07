@@ -3,6 +3,8 @@
 Description goes here
 https://github.com/collectiveidea/awesome_nested_set
 
+Changed relationship with issue
+Added more comfotable interface for working with test cases
 
 $ rake routes CONTROLLER=test_cases
     test_cases GET    /test_cases(.:format)          test_cases#index
@@ -74,3 +76,52 @@ edit_test_case GET    /test_cases/:id/edit(.:format) test_cases#edit
     </table>
 
   <%end%>
+
+Started PUT "/issues/47913" for 127.0.0.1 at 2016-04-06 16:00:27 +0300
+Processing by IssuesController#update as HTML
+  Parameters: {
+
+  "issue"=>{"is_private"=>"0", "project_id"=>"1", "tracker_id"=>"1", "subject"=>"second test", "description"=>"<p>{{view_information_about_sent_letter(3744, 19, 1, Journal)}}</p>\r\n\r\n<p>{{view_information_about_letter(47913, 6, 1, Issue)}}</p>\r\n\r\n<pre>\r\nHello!\r\n  Hello\r\nBest Regard!\r\nAlexey Kondratenko</pre>\r\n", 
+
+  "status_id"=>"1", 
+
+  "priority_id"=>"2", "assigned_to_id"=>"", "category_id"=>"", "fixed_version_id"=>"", "parent_issue_id"=>"", "start_date"=>"2016-03-04", "due_date"=>"", "estimated_hours"=>"", "done_ratio"=>"0", "custom_field_values"=>{"6"=>"", "7"=>"", "10"=>"", "12"=>"kljlkjlkjlkjlkjlkjlkjlk", "13"=>[""], "15"=>"", "16"=>"", "17"=>""}, "deals_issue_attributes"=>{"deal_id"=>""}, 
+
+  "notes"=>"<p>dzfgdsfgdsfg</p>\r\n", 
+
+  "private_notes"=>"0", "lock_version"=>"10"}, "new_checklist"=>"",
+  "time_entry"=>{"hours"=>"", "activity_id"=>"", "comments"=>""}, 
+  "last_journal_id"=>"3746", 
+
+  "commit"=>"Принять", "id"=>"47913"
+
+  }
+
+
+def update_issue_from_params
+    @edit_allowed = User.current.allowed_to?(:edit_issues, @project)
+    @time_entry = TimeEntry.new(:issue => @issue, :project => @issue.project)
+    @time_entry.attributes = params[:time_entry]
+
+    @issue.init_journal(User.current)
+
+    issue_attributes = params[:issue]
+    if issue_attributes && params[:conflict_resolution]
+      case params[:conflict_resolution]
+      when 'overwrite'
+        issue_attributes = issue_attributes.dup
+        issue_attributes.delete(:lock_version)
+      when 'add_notes'
+        issue_attributes = issue_attributes.slice(:notes)
+      when 'cancel'
+        redirect_to issue_path(@issue)
+        return false
+      end
+    end
+    @issue.safe_attributes = issue_attributes
+    @priorities = IssuePriority.active
+    @allowed_statuses = @issue.new_statuses_allowed_to(User.current)
+    true
+  end
+
+

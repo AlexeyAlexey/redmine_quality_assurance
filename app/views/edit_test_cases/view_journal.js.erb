@@ -1,0 +1,2 @@
+$("tr#journal-test-case-<%=@test_case.id%> td.journal").html("<%=j render(:partial => 'view_journal', :locals => {journals: @journals, project: @project, issue: @issue})%>");
+$('tr#journal-test-case-<%=@test_case.id%>').show();

@@ -15,6 +15,8 @@ Redmine::Plugin.register :redmine_quality_assurance do
 
   project_module :quality_assurance do
     permission :test_cases, { :test_cases => [:index, :show, :new, :create, :edit, :update, :destroy] }
+    permission :edit_test_cases, { :edit_test_cases => [:view_journal, :edit, :update] }
+
   end
 
   settings :default => {'empty' => true}, :partial => 'settings/quality_assurance/settings'

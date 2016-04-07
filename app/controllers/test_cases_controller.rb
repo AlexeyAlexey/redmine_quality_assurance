@@ -3,6 +3,7 @@ class TestCasesController < ApplicationController
 
   helper :test_cases
   include TestCasesHelper
+
   before_filter :find_project, only: [:index]
   
   before_filter :find_project_by_project_id, except: [:index] #, :if => proc {|c| params.include?("project_id")}
@@ -11,6 +12,9 @@ class TestCasesController < ApplicationController
   #before_filter :require_admin, :if => proc {|c| !params.include?("project_id")}
 
   def index
+    #visible_issues = Issue.visible.joins(:test_cases).where("test_cases.parent_id IS NULL")
+    #  .joins('LEFT OUTER JOIN test_case_projects ON test_cases.id = test_case_projects.test_case_id')
+    #  .where("test_case_projects.project_id = ?", @project.id)
     @test_cases = @project.test_cases.eager_load(:issue => [:attachments, :status]).where(nil)
     #if params["parent_id"].blank?
       @test_cases = @test_cases.where("test_cases.parent_id IS NULL")
