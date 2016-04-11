@@ -1,21 +1,23 @@
-<% reply_links = authorize_for('issues', 'edit') -%>
-<% for journal in journals %>
-  <div id="change-<%= journal.id %>" class="<%= journal.css_classes %>">
-    <div id="note-<%= journal.indice %>">
-    <h4><%= link_to "##{journal.indice}", {:anchor => "note-#{journal.indice}"}, :class => "journal-link" %>
-    <%= avatar(journal.user, :size => "24") %>
-    <%= authoring journal.created_on, journal.user, :label => :label_updated_time_by %></h4>
+<div class="description" style="height: 100px; overflow: auto; resize: vertical;">
+  <% reply_links = authorize_for('issues', 'edit') -%>
+  <% for journal in journals %>
+    <div id="change-<%= journal.id %>" class="<%= journal.css_classes %>">
+      <div id="note-<%= journal.indice %>">
+      <h4><%= link_to "##{journal.indice}", {:anchor => "note-#{journal.indice}"}, :class => "journal-link" %>
+      <%= avatar(journal.user, :size => "24") %>
+      <%= authoring journal.created_on, journal.user, :label => :label_updated_time_by %></h4>
 
-    <% if journal.details.any? %>
-    <ul class="details">
-      <% details_to_strings(journal.visible_details).each do |string| %>
-       <li><%= string %></li>
+      <% if journal.details.any? %>
+      <ul class="details">
+        <% details_to_strings(journal.visible_details).each do |string| %>
+         <li><%= string %></li>
+        <% end %>
+      </ul>
       <% end %>
-    </ul>
-    <% end %>
-    <%= render_test_case_notes(issue, journal, :reply_links => reply_links) unless journal.notes.blank? %>
+      <%= render_test_case_notes(issue, journal, :reply_links => reply_links) unless journal.notes.blank? %>
+      </div>
     </div>
-  </div>
-<% end %>
+  <% end %>
+</div>
 
 

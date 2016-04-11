@@ -36,6 +36,13 @@ class EditTestCasesController < ApplicationController
   #end
 
   def update
+
+    @issue.init_journal(User.current)
+
+    issue_attributes = params[:issue]
+    #issue_attributes[:notes] = issue_attributes.slice(:notes)
+    @issue.safe_attributes = issue_attributes
+    @issue.save
   end
 
   def view_journal

@@ -1,0 +1,3 @@
+$("tr#edit-test-case-<%=@test_case.id%> td").first().html("<%=j render partial: 'edit', locals: {issue: @issue, project: @project, test_case: @test_case, allowed_statuses: @allowed_statuses}%>");
+
+

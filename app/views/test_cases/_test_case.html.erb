@@ -1,4 +1,9 @@
-<table class="list test-case">
+<style type="text/css">
+  table.list-test-case-bag th {  background-color:#FF0000; padding: 4px; white-space:nowrap; }
+  table.list-test-case-bag thead.information th {  background-color:#EEEEEE; padding: 4px; white-space:nowrap; }
+</style>
+
+<table class="list list-test-case-bag" id="test-case-<%=test_case.id%>">
   <thead class="subject">
     <tr colspan="7">
       <th><%=test_case.name%></th>
@@ -6,12 +11,16 @@
       <th></th>
       <th></th>
       <th></th>
+      <th></th>
+      <th></th>
     </tr>
   </thead>
-  <thead>
+  <thead class="information">
     <tr>
       <th><b><%=l(:field_status)%></b>: <%=h(test_case.issue.status.name)%></th>
       <th class='assigned-to'><%=l(:field_assigned_to)%><%=avatar(test_case.issue.assigned_to, :size => "14").to_s.html_safe  + (test_case.issue.assigned_to ? link_to_user(test_case.issue.assigned_to) : "-")%></th>
+      <th></th>
+      <th></th>
       <th></th>
       <th></th>
       <th></th>
@@ -19,35 +28,57 @@
   </thead>
 
   <tbody>
-    <tr>
+    <tr class="group">
       <td><%=test_case.id%></td>
       <td><%=test_case.name%></td>
       <td><%=test_case.issue_id ? link_to_issue(test_case.issue) : ""%></td>
       <td></td>
       <td></td>
+      <td></td>
+      <td></td>
     </tr>
    
-    <tr class="payload" >
-      <td colspan="7">
-        <span class="payload">
+    <tr class="group">
+      <td colspan="7" >
+        <div style="height: 100px; overflow: auto; resize: vertical;">
           <%=textilizable test_case.issue, :description, :attachments => test_case.issue.attachments%>
-        </span>
+        </div>
       </td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+
     </tr>
     <tr>
       <td>История</td>
       <td></td>
       <td></td>
-      <td><%=link_to 'View History', view_journal_edit_test_cases_path(project_id: project.identifier, issue_id: test_case.issue.id, test_case_id: test_case.id), remote: true%></td>
+      <td></td>
+      <td></td>
+      <td>
+        <%=link_to 'View History', view_journal_edit_test_cases_path(project_id: project.identifier, issue_id: test_case.issue.id, test_case_id: test_case.id), remote: true%>
+      </td>
       <td><%=link_to 'Hide History', '###', onclick: "$( 'tr#journal-test-case-#{test_case.id}').toggle();"%></td>
     </tr>
-    <tr id="journal-test-case-<%=test_case.id%>">
+    <tr id="journal-test-case-<%=test_case.id%>" class="group">
       <td class="journal" colspan="7">
 
       </td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+
     </tr>
 
-    <tr colspan="7">
+    <tr id="edit-test-case-<%=test_case.id%>" >
+      <td colspan="7"></td>
+      <td></td>
       <td></td>
       <td></td>
       <td></td>
@@ -58,11 +89,17 @@
       <td></td>
       <td></td>
       <td></td>
-      <td><%=link_to "Edit Test Case", edit_edit_test_case_path(id: test_case.id, test_case_id: test_case.id, project_id: project.identifier)%></td>
-      <td><%=%></td>
+      <td></td>
+      <td></td>
+      <td>
+        <%=link_to "Edit Test Case", edit_edit_test_case_path(id: test_case.id, test_case_id: test_case.id, project_id: project.identifier), remote: true%>
+      </td>
+      <td><%=link_to "Close Edit Test Case", '###', onclick: "$('tr#edit-test-case-#{test_case.id} form').remove();"%></td>
     </tr>
 
     <tr>
+      <td></td>
+      <td></td>
       <td></td>
       <td></td>
       <td></td>
