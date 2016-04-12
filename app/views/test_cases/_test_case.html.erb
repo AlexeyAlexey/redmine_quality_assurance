@@ -1,14 +1,16 @@
-<style type="text/css">
-  table.list-test-case-bag th {  background-color:#FF0000; padding: 4px; white-space:nowrap; }
-  table.list-test-case-bag thead.information th {  background-color:#EEEEEE; padding: 4px; white-space:nowrap; }
-</style>
-
-<table class="list list-test-case-bag" id="test-case-<%=test_case.id%>">
+<table class="list-test-case" id="test-case-<%=test_case.id%>">
+  <thead class="test-case-head">
+    <tr>
+      <td colspan="20">
+        <div style="width: 100%; height: 30px; background-color: <%=status_colors["#{test_case.issue.status.id}"] || "green"%>; border-radius: 10px 10px 0 0;">
+        </div>
+      </td>
+    </tr>
+  </thead>
   <thead class="subject">
-    <tr colspan="7">
-      <th><%=test_case.name%></th>
-      <th><%=test_case.issue.subject%></th>
-      <th></th>
+    <tr colspan="6">
+      <th>Test Named: <%=test_case.name%></th>
+      <th><%=link_to "Reload Test Case", reload_test_case_edit_test_cases_path(test_case_id: test_case.id, project_id: project.identifier), remote: true%></th>
       <th></th>
       <th></th>
       <th></th>
@@ -19,7 +21,6 @@
     <tr>
       <th><b><%=l(:field_status)%></b>: <%=h(test_case.issue.status.name)%></th>
       <th class='assigned-to'><%=l(:field_assigned_to)%><%=avatar(test_case.issue.assigned_to, :size => "14").to_s.html_safe  + (test_case.issue.assigned_to ? link_to_user(test_case.issue.assigned_to) : "-")%></th>
-      <th></th>
       <th></th>
       <th></th>
       <th></th>
@@ -35,26 +36,24 @@
       <td></td>
       <td></td>
       <td></td>
-      <td></td>
     </tr>
-   
+  </tbody>
+  <tbody class="test-case-custom-fields">
+    <%=render_test_case_custom_fields_rows(test_case.issue)%>
+  </tbody>
+  <tbody>
     <tr class="group">
       <td colspan="7" >
         <div style="height: 100px; overflow: auto; resize: vertical;">
           <%=textilizable test_case.issue, :description, :attachments => test_case.issue.attachments%>
         </div>
       </td>
-      <td></td>
-      <td></td>
-      <td></td>
-      <td></td>
-      <td></td>
-      <td></td>
-
     </tr>
+  </tbody>
+
+  <tbody>
     <tr>
       <td>История</td>
-      <td></td>
       <td></td>
       <td></td>
       <td></td>
@@ -64,29 +63,15 @@
       <td><%=link_to 'Hide History', '###', onclick: "$( 'tr#journal-test-case-#{test_case.id}').toggle();"%></td>
     </tr>
     <tr id="journal-test-case-<%=test_case.id%>" class="group">
-      <td class="journal" colspan="7">
-
-      </td>
-      <td></td>
-      <td></td>
-      <td></td>
-      <td></td>
-      <td></td>
-      <td></td>
-
+      <td class="journal" colspan="6"></td>
     </tr>
+  </tbody>
 
+  <tbody>
     <tr id="edit-test-case-<%=test_case.id%>" >
-      <td colspan="7"></td>
-      <td></td>
-      <td></td>
-      <td></td>
-      <td></td>
-      <td></td>
-      <td></td>
+      <td colspan="6"></td>
     </tr>
     <tr>
-      <td></td>
       <td></td>
       <td></td>
       <td></td>
@@ -96,9 +81,10 @@
       </td>
       <td><%=link_to "Close Edit Test Case", '###', onclick: "$('tr#edit-test-case-#{test_case.id} form').remove();"%></td>
     </tr>
+  </tbody>
 
+  <tbody>
     <tr>
-      <td></td>
       <td></td>
       <td></td>
       <td></td>

@@ -8,6 +8,12 @@ class EditTestCasesController < ApplicationController
   include IssuesHelper
   helper :issues
 
+  include CustomFieldsHelper
+  helper :custom_fields
+
+  include TestCasesHelper
+  helper :test_cases
+
   before_filter :require_login
   
   #before_filter :find_project_by_project_id
@@ -59,6 +65,11 @@ class EditTestCasesController < ApplicationController
       format.js{render :view_journal}
       
     end
+  end
+
+  def reload_test_case
+    @status_colors = Setting.plugin_redmine_quality_assurance["status_colols"] || {} 
+    #render(:partial => 'test_cases/test_case', :locals => {:test_case => test_case, :project => @project, :status_colors => status_colors})
   end
 
   

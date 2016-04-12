@@ -4,6 +4,12 @@ class TestCasesController < ApplicationController
   helper :test_cases
   include TestCasesHelper
 
+  include IssuesHelper
+  helper :issues
+
+  include CustomFieldsHelper
+  helper :custom_fields
+
   before_filter :find_project, only: [:index]
   
   before_filter :find_project_by_project_id, except: [:index] #, :if => proc {|c| params.include?("project_id")}
@@ -21,6 +27,8 @@ class TestCasesController < ApplicationController
     #else
     #@test_cases = @test_cases.where("test_cases.parent_id = ?", params["parent_id"])
     #end
+    #{ "status_id" => "#color"}
+    #@status_colors = Setting.plugin_wiki_redmine_quality_assurance["status_colols"] || {} 
   end
 
   def new
@@ -30,7 +38,7 @@ class TestCasesController < ApplicationController
   end
 
   def show
-    @test_case = @project.test_cases.eager_load(:issue, children: [:issue => [:attachments, :status]]).where("test_cases.id = ?", params["id"]).first
+    @test_case = @project.test_cases.eager_load(:issue, children: [:issue => [:attachments, :status, :custom_values]]).where("test_cases.id = ?", params["id"]).first
     #@test_case = TestCase.eager_load(issue: [:project]).where(nil)
     #@test_case = @test_case.where("test_cases.id = ?", params["id"])
   end

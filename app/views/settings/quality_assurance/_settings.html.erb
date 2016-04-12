@@ -1,1 +1,28 @@
 <%=link_to "index", test_cases_path%>
+
+<table>
+  <tbody>
+    <tr>
+      <td>Status</td>
+      <td>Color</td>
+    </tr>
+    <%issue_statuses = IssueStatus.all%>
+
+      <%settings["status_colols"] ||= {} %>
+      <%issue_statuses.each do |status|%>
+      <tr>
+        <td align="left"><%=h status.name%></td> 
+      	<td align="left">
+      	  <%status_color = settings["status_colols"].try(:[], "#{status.id}")%>
+      	  <input type="color" name="settings[status_colols][<%=status.id%>]" value="<%= status_color ? status_color : "#ff0000" %>">
+      	</td> 
+      </tr>
+    <%end%>
+
+    <tr>
+      <td>
+        <td align="center"></td>
+      </td>
+    </tr>
+  </tbody>
+</table>

@@ -1,6 +1,7 @@
 <div>
-
-<%=render_test_case_hierarchy(@test_case.self_and_descendants.group_by(&:parent_id) , node=nil, options={}) %>
-
-  
+  <%=render_test_case_hierarchy(@test_case.self_and_descendants.group_by(&:parent_id) , node=nil, options={}) %>
 </div>
+
+<% content_for :header_tags do%>
+  <%=stylesheet_link_tag("test_case", :plugin => "redmine_quality_assurance")%>
+<% end %>
