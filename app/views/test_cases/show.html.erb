@@ -1,5 +1,5 @@
 <div>
-  <%=render_test_case_hierarchy(@test_case.self_and_descendants.group_by(&:parent_id) , node=nil, options={}) %>
+  <%=render_test_case_hierarchy(@test_case.self_and_descendants.group_by(&:parent_id) , node=nil, 'test_cases/short_test_case', options={}) %>
 </div>
 
 <% content_for :header_tags do%>

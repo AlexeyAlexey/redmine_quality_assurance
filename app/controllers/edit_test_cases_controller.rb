@@ -71,6 +71,10 @@ class EditTestCasesController < ApplicationController
     @status_colors = Setting.plugin_redmine_quality_assurance["status_colols"] || {} 
     #render(:partial => 'test_cases/test_case', :locals => {:test_case => test_case, :project => @project, :status_colors => status_colors})
   end
+  
+  def roll_up_test_case
+    @status_colors = Setting.plugin_redmine_quality_assurance["status_colols"] || {}
+  end
 
   
   private

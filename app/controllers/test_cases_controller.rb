@@ -43,6 +43,10 @@ class TestCasesController < ApplicationController
     #@test_case = @test_case.where("test_cases.id = ?", params["id"])
   end
 
+  #def show_short_tree
+  #  @test_case = @project.test_cases.eager_load(:issue, children: [:issue => [:attachments, :status, :custom_values]]).where("test_cases.id = ?", params["id"]).first
+  #end
+
   def edit
     @test_case = @project.test_cases.where("test_cases.id = ?", params["id"]).first
   end

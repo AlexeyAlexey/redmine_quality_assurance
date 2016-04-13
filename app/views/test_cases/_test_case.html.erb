@@ -2,19 +2,25 @@
   <thead class="test-case-head">
     <tr>
       <td colspan="20">
-        <div style="width: 100%; height: 30px; background-color: <%=status_colors["#{test_case.issue.status.id}"] || "green"%>; border-radius: 10px 10px 0 0;">
+        <div style="width: 100%; height: 30px; padding: 1px 1px 1px 10px; background-color: <%=status_colors["#{test_case.issue.status.id}"] || "green"%>; border-radius: 10px 10px 0 0;">
+          <span style="background-color: white; border-radius: 5px 5px 5px 5px;"> <%=h(test_case.issue.status.name)%> </span>
+          <span style="background-color: white; border-radius: 5px 5px 5px 5px; padding: 1px; margin: 0.2%; float:right">
+            <%=link_to "", reload_test_case_edit_test_cases_path(test_case_id: test_case.id, project_id: project.identifier), :class => "ui-icon  ui-icon-refresh", style: 'display:inline-block;', remote: true%>
+            <%=link_to "", roll_up_test_case_edit_test_cases_path(test_case_id: test_case.id, project_id: project.identifier), :class => "ui-icon  ui-icon-circlesmall-minus", style: 'display: inline-block;', remote: true%>
+            <%=link_to "", reload_test_case_edit_test_cases_path(test_case_id: test_case.id, project_id: project.identifier), :class => "ui-icon  ui-icon-newwin", style: 'display:inline-block;', remote: true%>
+          </span>
         </div>
       </td>
     </tr>
   </thead>
   <thead class="subject">
-    <tr colspan="6">
+    <tr>
       <th>Test Named: <%=test_case.name%></th>
+      <td><%=test_case.issue_id ? link_to_issue(test_case.issue) : ""%></td>
+      <th><b><%=l(:field_status)%></b>: <%=h(test_case.issue.status.name)%></th>
+      <th></th>
+      <th><%=link_to "Roll up Test Case", roll_up_test_case_edit_test_cases_path(test_case_id: test_case.id, project_id: project.identifier), remote: true%></th>
       <th><%=link_to "Reload Test Case", reload_test_case_edit_test_cases_path(test_case_id: test_case.id, project_id: project.identifier), remote: true%></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
     </tr>
   </thead>
   <thead class="information">
@@ -32,7 +38,7 @@
     <tr class="group">
       <td><%=test_case.id%></td>
       <td><%=test_case.name%></td>
-      <td><%=test_case.issue_id ? link_to_issue(test_case.issue) : ""%></td>
+      <td></td>
       <td></td>
       <td></td>
       <td></td>

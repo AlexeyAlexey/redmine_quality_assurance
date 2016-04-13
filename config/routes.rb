@@ -7,5 +7,6 @@ resources :edit_test_cases, only: [:view_journal, :edit, :update, :reload_test_c
   collection do 
     get :view_journal
     get :reload_test_case
+    get :roll_up_test_case
   end 
 end

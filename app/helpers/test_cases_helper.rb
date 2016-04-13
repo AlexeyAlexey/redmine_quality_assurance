@@ -1,7 +1,7 @@
 module TestCasesHelper
   
 
-  def render_test_case_hierarchy(test_cases, node=nil, options={})
+  def render_test_case_hierarchy(test_cases, node=nil, partial='test_cases/test_case', options={})
     status_colors = Setting.plugin_redmine_quality_assurance["status_colols"] || {} 
 
     content = ''
@@ -10,9 +10,9 @@ module TestCasesHelper
       test_cases[node].each do |test_case|
         content << "<li>"
         
-        content << render(:partial => 'test_cases/test_case', :locals => {:test_case => test_case, :project => @project, :status_colors => status_colors})
+        content << render(:partial => partial, :locals => {:test_case => test_case, :project => @project, :status_colors => status_colors})
         
-        content << "\n" + render_test_case_hierarchy(test_cases, test_case.id, options) if test_cases[test_case.id]
+        content << "\n" + render_test_case_hierarchy(test_cases, test_case.id, partial, options) if test_cases[test_case.id]
         content << "</li>\n"
       end
       content << "</ul>\n"
