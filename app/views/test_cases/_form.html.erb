@@ -2,8 +2,8 @@
   <%=hidden_field_tag :project_id, @project.identifier%>
   <%=f.hidden_field :parent_id, value: test_case.parent_id%>
   
-  <%=f.text_field :name%>
-  <%=f.number_field :issue_id%>
+  Test Case Name: <%=f.text_field :name%>
+  IssueID:<%=f.number_field :issue_id%>
 
   <%=f.button%>
 <%end%>
