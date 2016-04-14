@@ -19,8 +19,8 @@
       <td><%=test_case.issue_id ? link_to_issue(test_case.issue) : ""%></td>
       <th><b><%=l(:field_status)%></b>: <%=h(test_case.issue.status.name)%></th>
       <th></th>
-      <th><%=link_to "Roll up Test Case", roll_up_test_case_edit_test_cases_path(test_case_id: test_case.id, project_id: project.identifier), remote: true%></th>
-      <th><%=link_to "Reload Test Case", reload_test_case_edit_test_cases_path(test_case_id: test_case.id, project_id: project.identifier), remote: true%></th>
+      <th></th>
+      <th></th>
     </tr>
   </thead>
   <thead class="information">
@@ -72,35 +72,50 @@
       <td class="journal" colspan="6"></td>
     </tr>
   </tbody>
-
+  <%if User.current.allowed_to?(:update_test_cases, @project)%>
+    <tbody>
+      <tr id="edit-test-case-<%=test_case.id%>" >
+        <td colspan="6"></td>
+      </tr>
+      <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td>
+          <%=link_to "Edit Test Case", edit_edit_test_case_path(id: test_case.id, test_case_id: test_case.id, project_id: project.identifier), remote: true%>
+        </td>
+        <td><%=link_to "Close Edit Test Case", '###', onclick: "$('tr#edit-test-case-#{test_case.id} form').remove();"%></td>
+      </tr>
+    </tbody>
+  <%end%>
   <tbody>
-    <tr id="edit-test-case-<%=test_case.id%>" >
-      <td colspan="6"></td>
-    </tr>
     <tr>
       <td></td>
       <td></td>
-      <td></td>
-      <td></td>
-      <td>
-        <%=link_to "Edit Test Case", edit_edit_test_case_path(id: test_case.id, test_case_id: test_case.id, project_id: project.identifier), remote: true%>
-      </td>
-      <td><%=link_to "Close Edit Test Case", '###', onclick: "$('tr#edit-test-case-#{test_case.id} form').remove();"%></td>
+      <td><%=link_to("Show Tree", test_case_path(id: test_case.id, project_id: project.identifier) ) if test_case.parent_id.nil?%></td>
+      
+      <%if User.current.allowed_to?(:edit_test_cases, @project)%>
+        <td>
+          <%= link_to "New sub Test Case", new_test_case_path(parent_id: test_case.id, project_id: project.identifier)%>
+        </td>
+        <td>
+          <%=link_to "Edit", edit_test_case_path(id: test_case.id, project_id: project.identifier)%>
+        </td>
+        <td>
+          <%=link_to "Delete", {controller: "test_cases", action: "destroy", id: test_case.id, project_id: project.identifier}, method: "DELETE"%>
+        </td>
+      <%end%>
     </tr>
-  </tbody>
 
-  <tbody>
+  </tbody>
+  <thead class="test-case-head">
     <tr>
-      <td></td>
-      <td></td>
-      <td></td>
-      <td></td>
-      <td>
-        <%= link_to "New sub", new_test_case_path(parent_id: test_case.id, project_id: project.identifier)%>
+      <td colspan="20">
+        <div style="width: 100%; height: 15px; padding: 1px 1px 1px 10px; background-color: <%=status_colors["#{test_case.issue.status.id}"] || "green"%>; border-radius: 0 0 10px 10px;">
+        </div>
       </td>
-      <td><%=link_to "Edit", edit_test_case_path(id: test_case.id, project_id: project.identifier)%></td>
     </tr>
-
-  </tbody>
+  </thead>
 </table>
 

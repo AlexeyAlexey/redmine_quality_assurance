@@ -1,84 +1,9 @@
-<style type="text/css">
-  .test-case{
-    border-radius: 10px;
-    border: 1px solid #000;
-    box-shadow: 0 1px 0 rgba(255,255,255,.8) inset;
-  }
-  thead.subject{
-    background-color: #F74949;
-  }
-
-  table.test-case { border: 1px solid #e4e4e4;  border-collapse: collapse; width: 100%; margin-bottom: 4px; }
-  table.test-case th {  background-color:#EEEEEE; padding: 4px; white-space:nowrap; }
-  
-  span.payload {
-    overflow: hidden;
-    white-space: nowrap;
-  }
-  span.payload:hover { 
-    overflow: scroll; 
-    white-space: normal;
-  }
-
-</style>
 <%@test_cases.each do |test_case|%>
-  <table class="list test-case">
-    <thead class="subject">
-      <tr colspan="7">
-        <th ><%=test_case.issue.subject%></th>
-        <th></th>
-        <th></th>
-        <th></th>
-        <th></th>
-        <th></th>
-        <th></th>
-      </tr>
-    </thead>
-    <thead>
-      <tr>
-        <th></th>
-        <th></th>
-        <th></th>
-        <th></th>
-        <th></th>
-        <th></th>
-        <th></th>
-      </tr>
-    </thead>
-
-    <tbody>
-        <tr>
-          <td><b><%=l(:field_status)%></b>: <%=h(test_case.issue.status.name)%></td>
-          <td><%=test_case.name%></td>
-          <td><%=test_case.issue_id ? link_to_issue(test_case.issue) : ""%></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-        </tr>
-     
-        <tr>
-          <td colspan="7">
-            <span >
-              <%=textilizable test_case.issue, :description, :attachments => test_case.issue.attachments%>
-            </span>
-          </td>
-        </tr>
-        <tr>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td><%=link_to "Show", test_case_path(id: test_case.id, project_id: @project.identifier)%></td>
-          <td><%= link_to "New sub", new_test_case_path(parent_id: test_case.id, project_id: @project.identifier)%></td>
-          <td><%=link_to "Edit", edit_test_case_path(id: test_case.id, project_id: @project.identifier)%></td>
-          <td><%=link_to "Delete", {controller: "test_cases", action: "destroy", id: test_case.id, project_id: @project.identifier}, method: "DELETE"%></td>
-        </tr>
-    </tbody>
-  </table>
-
+  <%=render partial: 'test_cases/short_test_case', :locals => {:test_case => test_case, :project => @project, :status_colors => @status_colors} %>
 <%end%>
-
-<%= link_to "New", new_test_case_path(project_id: @project.identifier)%>
+<%if User.current.allowed_to?(:edit_test_cases, @project)%>
+  <%=link_to "Create Root of Test Case", new_test_case_path(project_id: @project.identifier)%>
+<%end%>
 
 <% content_for :header_tags do%>
   <%=stylesheet_link_tag("test_case", :plugin => "redmine_quality_assurance")%>

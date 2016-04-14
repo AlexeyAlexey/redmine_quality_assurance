@@ -18,6 +18,7 @@ class TestCasesController < ApplicationController
   #before_filter :require_admin, :if => proc {|c| !params.include?("project_id")}
 
   def index
+    @status_colors = Setting.plugin_redmine_quality_assurance["status_colols"] || {} 
     #visible_issues = Issue.visible.joins(:test_cases).where("test_cases.parent_id IS NULL")
     #  .joins('LEFT OUTER JOIN test_case_projects ON test_cases.id = test_case_projects.test_case_id')
     #  .where("test_case_projects.project_id = ?", @project.id)
@@ -55,12 +56,20 @@ class TestCasesController < ApplicationController
     @test_case = @project.test_cases.create(params["test_case"])
     unless @test_case.errors.any?
       respond_to do |format|
-        format.html{redirect_to test_cases_path(id: @project.identifier), notice: "Success Updated"}
+        if @test_case.parent_id.nil?
+          format.html{redirect_to test_cases_path(id: @project.identifier), notice: "Success Created"}
+        else
+          format.html{redirect_to test_case_path(project_id: @project.identifier, id: @test_case.root.id), notice: "Success Created"}
+        end
       end
       return
     else
       respond_to do |format|
-        format.html{redirect_to test_cases_path(id: @project.identifier), flash: {error: @test_case.errors.full_messages.join(', ')} }
+        if @test_case.parent_id.nil?
+          format.html{redirect_to test_cases_path(id: @project.identifier), flash: {error: @test_case.errors.full_messages.join(', ')} }
+        else
+          format.html{redirect_to test_case_path(project_id: @project.identifier, id: @test_case.root.id), flash: {error: @test_case.errors.full_messages.join(', ')} }
+        end
       end
       return
     end
@@ -71,12 +80,20 @@ class TestCasesController < ApplicationController
     @test_case.update_attributes(params["test_case"])
     unless @test_case.errors.any?
       respond_to do |format|
-        format.html{redirect_to test_cases_path(id: @project.identifier), notice: "Success Updated"}
+        if @test_case.parent_id.nil?
+          format.html{redirect_to test_cases_path(id: @project.identifier), notice: "Success Updated"}
+        else
+          format.html{redirect_to test_case_path(project_id: @project.identifier, id: @test_case.root.id), notice: "Success Updated"}
+        end
       end
       return
     else
       respond_to do |format|
-        format.html{redirect_to test_cases_path(id: @project.identifier), flash: {error: @test_case.errors.full_messages.join(', ')} }
+        if @test_case.parent_id.nil?
+          format.html{redirect_to test_cases_path(id: @project.identifier), flash: {error: @test_case.errors.full_messages.join(', ')} }
+        else
+          format.html{redirect_to test_case_path(project_id: @project.identifier, id: @test_case.root.id), flash: {error: @test_case.errors.full_messages.join(', ')} }
+        end
       end
       return
     end

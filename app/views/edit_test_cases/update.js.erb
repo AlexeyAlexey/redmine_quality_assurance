@@ -1,1 +1,2 @@
 $('tr#edit-test-case-<%=@test_case.id%> form').remove();
+$("table#test-case-<%=@test_case.id%>").replaceWith("<%=j render(:partial => 'test_cases/test_case', :locals => {:test_case => @test_case, :project => @project, :status_colors => @status_colors})%>");

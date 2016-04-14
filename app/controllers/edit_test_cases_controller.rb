@@ -42,7 +42,8 @@ class EditTestCasesController < ApplicationController
   #end
 
   def update
-
+    @status_colors = Setting.plugin_redmine_quality_assurance["status_colols"] || {} 
+    
     @issue.init_journal(User.current)
 
     issue_attributes = params[:issue]

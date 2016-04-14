@@ -2,8 +2,8 @@
   <thead class="test-case-head">
     <tr>
       <td colspan="20">
-        <div style="width: 100%; height: 30px; padding: 1px 1px 1px 10px; background-color: <%=status_colors["#{test_case.issue.status.id}"] || "green"%>; border-radius: 10px 10px 0 0;">
-          <span style="background-color: white; border-radius: 5px 5px 5px 5px;"> <%=h(test_case.issue.status.name)%> </span>
+        <div style="width: 100%; height: 30px; padding: 1px 1px 1px 10px; background-color: red; border-radius: 10px 10px 0 0;">
+          <span style="background-color: white; border-radius: 5px 5px 5px 5px;"> !!!Issue does not exist </span>
           <span style="background-color: white; border-radius: 5px 5px 5px 5px; padding: 1px; margin: 0.2%; float:right">
             <%=link_to "", roll_up_test_case_edit_test_cases_path(test_case_id: test_case.id, project_id: project.identifier), :class => "ui-icon  ui-icon-refresh", style: 'display: inline-block;', remote: true%>
             <%=link_to "", '###', :class => "ui-icon  ui-icon-circlesmall-minus", style: 'display: inline-block;'%>
@@ -16,8 +16,8 @@
   <thead class="subject">
     <tr>
       <th>Test Named: <%=test_case.name%></th>
-      <td><%=test_case.issue_id ? link_to_issue(test_case.issue) : ""%></td>
-      <th><b><%=l(:field_status)%></b>: <%=h(test_case.issue.status.name)%></th> 
+      <td></td>
+      <th></th> 
       <th>
       </th>
       <th></th>
@@ -26,19 +26,35 @@
   </thead>
   <thead class="information">
     <tr>
-      <th><b><%=l(:field_status)%></b>: <%=h(test_case.issue.status.name)%></th>
-      <th class='assigned-to'><%=l(:field_assigned_to)%><%=avatar(test_case.issue.assigned_to, :size => "14").to_s.html_safe  + (test_case.issue.assigned_to ? link_to_user(test_case.issue.assigned_to) : "-")%>
-      </th>
+      <th>Issue does not exist</th>
+      <th class='assigned-to'></th>
       <th></th>
       <th></th>
       <th></th>
       <th></th>
     </tr>
   </thead>
+  <tbody>
+    <tr>
+      <td></td>
+      <td></td>
+      <td><%=link_to("Show Tree", test_case_path(id: test_case.id, project_id: project.identifier) ) if test_case.parent_id.nil?%></td>
+      <td>
+        <%= link_to "New sub", new_test_case_path(parent_id: test_case.id, project_id: project.identifier)%>
+      </td>
+      <td>
+        <%=link_to "Edit", edit_test_case_path(id: test_case.id, project_id: project.identifier)%>
+      </td>
+      <td>
+        <%=link_to "Delete", {controller: "test_cases", action: "destroy", id: test_case.id, project_id: project.identifier}, method: "DELETE"%>
+      </td>
+    </tr>
+
+  </tbody>
   <thead class="test-case-head">
     <tr>
       <td colspan="20">
-        <div style="width: 100%; height: 15px; padding: 1px 1px 1px 10px; background-color: <%=status_colors["#{test_case.issue.status.id}"] || "green"%>; border-radius: 0 0 10px 10px;">
+        <div style="width: 100%; height: 15px; padding: 1px 1px 1px 10px; background-color: red; border-radius: 0 0 10px 10px;">
         </div>
       </td>
     </tr>

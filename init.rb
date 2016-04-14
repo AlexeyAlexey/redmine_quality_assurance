@@ -14,14 +14,17 @@ Redmine::Plugin.register :redmine_quality_assurance do
 
 
   project_module :quality_assurance do
-    permission :test_cases, { :test_cases => [:index, :show, :new, :create, :edit, :update, :destroy], 
-                              :edit_test_cases => [:reload_test_case, :roll_up_test_case] }
 
-    permission :edit_test_cases, { :edit_test_cases => [:view_journal, :edit, :update] }
+    permission :view_test_cases, { :test_cases => [:index, :show], 
+                                   :edit_test_cases => [:reload_test_case, :roll_up_test_case, :view_journal] 
+                                 }
+    permission :edit_test_cases, { :test_cases => [:index, :show, :new, :create, :edit, :update, :destroy] }
+
+    permission :update_test_cases, { :edit_test_cases => [ :edit, :update] }
 
   end
 
   settings :default => {'empty' => true}, :partial => 'settings/quality_assurance/settings'
 
-  menu :project_menu, :test_cases, { :controller => 'test_cases', :action => 'index' }, :caption => 'test_cases'
+  menu :project_menu, :test_cases, { :controller => 'test_cases', :action => 'index' }, :caption => :test_cases_title
 end
